@@ -1,59 +1,62 @@
 class Solution {
-public: 
-    int target;
-    vector<int> ans, temp;
-    unordered_set<int> taken;
+public:
 
-    bool solve(int n, int idx) {
+    vector<int> res;
 
-        while(idx < target && temp[idx] != 0)
-            ++idx;
+    int s;
 
-        if(idx == target) {
-            ans = temp;
-            return true;
+    void backtrack(int index, vector<int>& arr, vector<int>& nums) {
+
+        
+
+        if (res[0]!=0) {
+            return;
         }
 
-        for(int num = n; num >= 1; --num) {
-            if(taken.find(num) != taken.end())
-                continue;
 
-            if(num == 1) {
-                temp[idx] = 1;
-                taken.insert(1);
-
-                if(solve(n, idx + 1))
-                    return true;
-
-                temp[idx] = 0;
-                taken.erase(1);
-            }
-
-            else {
-                int j = idx + num;
-
-                if(j < target && temp[j] == 0) {
-                    temp[idx] = temp[j] = num;
-                    taken.insert(num);
-
-                    if(solve(n, idx + 1))
-                        return true;
-
-                    temp[idx] = temp[j] = 0;
-                    taken.erase(num);
-                }
-            }
+        if (index>=arr.size()) {
+            res = arr;
+            return;
         }
 
-        return false;
+        if (arr[index]!=0) {
+            backtrack(index+1,arr,nums);
+            return;
+        }
+
+        for (int i = s;i>=1;i--) {
+            if (arr[index]==0&&i==1&&nums[i]!=0) {
+                nums[i]=0;
+                arr[index]=i;
+                backtrack(index+1,arr,nums);
+                arr[index]=0;
+                nums[i]=1;
+            }
+            else if (arr[index]==0&&index+i<arr.size()&&arr[index+i]==0&&nums[i]!=0) {
+                arr[index]=i;
+                arr[index+i]=i;
+                nums[i]=0;
+                backtrack(index+1,arr,nums);
+                arr[index]=0;
+                arr[index+i]=0;
+                nums[i]=1;
+            }
+        }
+        
     }
 
     vector<int> constructDistancedSequence(int n) {
-        target = n * 2 - 1;
-        ans.resize(target);
-        temp.resize(target);
+        res = vector<int>((n*2)-1);
+        vector<int> vec((n*2)-1);
 
-        solve(n, 0);
-        return ans;
+        s = n;
+
+        vector<int> nums(n+1,1);
+
+        backtrack(0,vec,nums);
+
+
+
+        return res;
     }
 };
