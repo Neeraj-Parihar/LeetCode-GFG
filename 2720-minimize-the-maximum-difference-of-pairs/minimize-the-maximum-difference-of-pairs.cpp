@@ -3,13 +3,13 @@ class Solution
 public:
     int minimizeMax(vector<int>& nums, int p) 
     {
-        // Step 1: Sort the array
+     
         sort(nums.begin(), nums.end());
 
         int low = 0;
         int high = nums.back() - nums.front();
 
-        // Step 3: Binary search
+    
         while (low < high) 
         {
             int mid = low + (high - low) / 2;
@@ -24,12 +24,11 @@ public:
             }
         }
 
-        // Step 5: Return answer
+
         return low;
     }
 
 private:
-    // Step 4: Greedy pair formation
     bool canFormPairs(const vector<int>& nums, int p, int maxDiff) 
     {
         int count = 0;
