@@ -6,7 +6,7 @@ public:
         for(char a : s) map[a]++;
         for(char a : t) map[a]--;
         
-        for(auto a : map){
+        for(auto &a : map){
             if(a.second!=0) return false;
         }
         return true;
